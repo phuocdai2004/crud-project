@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"); 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // Ensure bcryptjs is used
 var Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({ 
@@ -21,7 +21,7 @@ const User = mongoose.model("User", userSchema, 'users');
         firstName: 'Admin',
         lastName: 'User',
         email: adminEmail,
-        password: await bcrypt.hash('defaultpassword', 10), 
+        password: await bcrypt.hash('defaultpassword', 10), // bcryptjs usage
         isAdmin: true
       });
       await newAdmin.save();
