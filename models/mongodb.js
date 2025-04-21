@@ -1,19 +1,16 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const connectDB = async () => {
-    if (mongoose.connection.readyState === 0) { // Kiểm tra trạng thái kết nối
-        try {
-            await mongoose.connect("mongodb://localhost:27017/crud_project", {
-                // useNewUrlParser: true,
-                // useUnifiedTopology: true,
-            });
-            console.log("MongoDB connected");
-        } catch (error) {
-            console.error("MongoDB connection failed:", error);
-            process.exit(1);
-        }
-    } else {
-        console.log("MongoDB connection already active");
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Connected to MongoDB Atlas successfully');
+    } catch (error) {
+        console.error('Failed to connect to MongoDB Atlas:', error.message);
+        process.exit(1); // Exit the process with failure
     }
 };
 
