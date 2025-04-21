@@ -6,7 +6,6 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const { isAdmin } = require('../middleware');
 
-
 router.post('/make-admin/:id', isAdmin, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -87,7 +86,13 @@ router.post("/login", async (req, res, next) => {
                 return res.status(500).send("Lỗi khi lưu session");
             }
             console.log('Đăng nhập thành công:', req.session.user.firstName, req.session.user.lastName);
-            return res.redirect("/");
+            
+            // Redirect admin users to admin page
+            if (user.isAdmin) {
+                return res.redirect("/admin");
+            } else {
+                return res.redirect("/");
+            }
         });
     } catch (error) {
         console.error('Lỗi đăng nhập:', error);
@@ -138,6 +143,35 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.error('Lỗi khi lấy đơn hàng:', error);
         res.render('account', { user: req.session.user, error: 'Lỗi khi lấy đơn hàng.' });
+    }
+});
+
+// Add a route to check admin status before payment
+router.get('/check-payment-eligibility', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Vui lòng đăng nhập để tiếp tục' });
+    }
+    
+    try {
+        // Check if user is admin
+        if (req.session.user.isAdmin) {
+            return res.status(403).json({ 
+                error: true, 
+                message: 'Tài khoản admin không thể thực hiện thanh toán' 
+            });
+        }
+        
+        // If not admin, allow payment
+        return res.status(200).json({ 
+            error: false, 
+            message: 'Có thể tiếp tục thanh toán' 
+        });
+    } catch (error) {
+        console.error('Lỗi kiểm tra quyền thanh toán:', error);
+        return res.status(500).json({ 
+            error: true, 
+            message: 'Đã xảy ra lỗi khi kiểm tra quyền thanh toán' 
+        });
     }
 });
 

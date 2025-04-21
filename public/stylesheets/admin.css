@@ -141,3 +141,24 @@
     padding: 5px 35px;
     text-align: left; /* Canh trái nội dung, nếu cần */
 }
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 15px;
+  padding: 5px 10px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.home-link:hover {
+  background-color: #2980b9;
+}
+
+.home-link i {
+  margin-right: 5px;
+}
