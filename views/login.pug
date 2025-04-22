@@ -11,7 +11,7 @@ html(lang="en")
         h1 Đăng nhập tài khoản
         form(method="post" action="/account/login")
           if error 
-            p.error-message= error
+            p.error-message(style="color: red;") #{error} <!-- Hiển thị lỗi bằng tiếng Việt -->
 
           // Email
           .form-group

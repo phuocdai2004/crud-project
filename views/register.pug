@@ -11,7 +11,7 @@ html(lang="en")
         h1 Đăng kí tài khoản
         form(method="post" action="/account/register")
           if error
-            p.error-message= error
+            p.error-message(style="color: red;") #{error} <!-- Hiển thị lỗi bằng tiếng Việt -->
 
           // First Name
           .form-group
@@ -44,4 +44,4 @@ html(lang="en")
           // Link to Login Page
           p.login-text
             | Đã có tài khoản 
-            a(href="/login" class="login-link") Đăng nhập 
+            a(href="/login" class="login-link") Đăng nhập
